@@ -38,21 +38,20 @@ In this example the *slave* device simply broadcasts a message
 
 ## Tricks & useful points learned along the way
 
-**Check the UART <-> MAX3485 wiring**
+### Check the UART <-> MAX3485 wiring
 
 The Tx pin of the MAX3485 chip needs to be connected to UART **RX** and vice versa for the RX -> TX pins. It's easy to forget this resulting in no data transmission between devices. 
 
-**Invert logic levels**
-
+### Invert logic levels
 Since all devices need to use the same logic levels, if no data is being transmitted try inverting the UART Tx/Rx levels in the UART initialisation.
 
-**Dvice RS485 wiring**
-
+### Dvice RS485 wiring
 In some rare cases manufacturers may have incorrectly wired the A/B of RS485. This should never happen but worth trying if all else fails connecting a device. 
 
-**MicroPython UART does not implement flush**
-
+### MicroPython UART does not implement flush
 Since UART is asynchronous data may not have completely sent before python execution continues. arduino implementations include a flush() commeand to overcome this problem. There is an active thread here on the topic, potentially a feature included in future. To work around the issue I simply introduced substantial timing delays in my final solution code. In my case it did not impact functionality since data throughput for my application over RS485 is quite low. 
+
+### UART.any() may not be reliable
 
 
 
