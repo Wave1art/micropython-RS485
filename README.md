@@ -16,7 +16,7 @@ Examples 1 & 2 below were tested using pure micropython v1.19.1 on Lolin D32 Pro
 
 Both of the development boards were wired identically as per the diagram below. 
 
-![Fritzing diagram showing basic wiring](MicroPython RS485 Example_bb.png)
+![Fritzing diagram showing basic wiring](MicroPython RS485 Example_bb.png?raw=true)
 
 *Circuit notes*
 
