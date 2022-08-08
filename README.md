@@ -58,7 +58,9 @@ In some rare cases manufacturers may have incorrectly wired the A/B of RS485. Th
 ### MicroPython UART does not implement flush
 Since UART is asynchronous data may not have completely sent before python execution continues. Arduino implementations include a flush() command to overcome this problem. There is an [active thread here](https://forum.micropython.org/viewtopic.php?t=5739) on the topic, potentially a feature included in future. To work around the issue I simply introduced substantial timing delays in my final solution code. In my case it did not impact functionality since data throughput for my application over RS485 is quite low. 
 
-A more robust approach is to explicitly check the ESP32's UART_STATUS_REG which contains the status of the UART transmitter as per [this part of the post](https://forum.micropython.org/viewtopic.php?t=5739#p33027).  
+A more robust approach is to explicitly check the ESP32's UART_STATUS_REG which contains the status of the UART transmitter as per [this part of the post](https://forum.micropython.org/viewtopic.php?t=5739#p33027).
+
+Documentation [here](https://docs.micropython.org/en/latest/esp32/tutorial/peripheral_access.html) shows how to read and write to specific registers from MicroPython. The ESP32 documentation is [here](https://www.espressif.com/sites/default/files/documentation/esp32_technical_reference_manual_en.pdf).
 
 ### UART.any() may not be reliable
 It seems that `UART.any()` may return a spurious number of characters available to read. This is most likely when a new device is added to the bus, for example when in example 1 when the master (listner) is already running and a slave is connected. In practice this is best dealt with by using a communications protocol like Modbus and discarding junk or corrupted messages. 
