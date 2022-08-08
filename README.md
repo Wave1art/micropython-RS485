@@ -66,7 +66,7 @@ Documentation [here](https://docs.micropython.org/en/latest/esp32/tutorial/perip
 It seems that `UART.any()` may return a spurious number of characters available to read. This is most likely when a new device is added to the bus, for example when in example 1 when the master (listner) is already running and a slave is connected. In practice this is best dealt with by using a communications protocol like Modbus and discarding junk or corrupted messages. 
 
 
-## Useful resources relating to RS485 and related topics
+## Useful resources relating to RS485
 Most of these are not directly related to MicroPython or ESP32 but nonetheless were helpful for me to piece together a working solution.
 - [MAX3485 - Manufacturer site](https://www.maximintegrated.com/en/products/interface/transceivers/MAX3485.html#tech-docs)
 - [MAX3485 Datasheet](https://datasheets.maximintegrated.com/en/ds/MAX3483-MAX3491.pdf)
