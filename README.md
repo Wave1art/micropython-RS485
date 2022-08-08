@@ -1,4 +1,4 @@
-# micropython-RS485
+# MicroPython RS485 Examples
 
 This repository contains a few examples, debugging tactics and tricks for getting started with RS485 communications using MicroPython on ESP32. It is based on my own experience of trying to get started with RS485 and modbus on micropython and running into a paucity of information to help me.
 
@@ -16,6 +16,8 @@ Examples 1 & 2 below were tested using pure micropython v1.19.1 on Lolin D32 Pro
 
 Both of the development boards were wired identically as per the diagram below. 
 
+![Fritzing diagram showing basic wiring](MicroPython RS485 Example_bb.png)
+
 *Circuit notes*
 
 RE and DE pins of the MAX3485 chip are connected together. This is the control pin for the MAX3485 chip. It is high when the device is transmitting data and low when the device is listening for data (receive mode). 
@@ -28,7 +30,7 @@ Since RS485 uses differential voltages it is not necessary to include a common g
 
 
 ## The examples:
-1. Basic transmitter and receiver - useful to ensure the correct wiring and establish 
+1. Basic transmitter and receiver - useful to ensure the correct wiring and establish basic principles
 2. RS485 echo - repeats everything sent by the master
 
 ### Example 1 - message receiver
@@ -47,13 +49,13 @@ The Tx pin of the MAX3485 chip needs to be connected to UART **RX** and vice ver
 ### Invert logic levels
 Since all devices need to use the same logic levels, if no data is being transmitted try inverting the UART Tx/Rx levels in the UART initialisation.
 
-### Dvice RS485 wiring
+### Device RS485 wiring
 In some rare cases manufacturers may have incorrectly wired the A/B of RS485. This should never happen but worth trying if all else fails connecting a device. 
 
 ### MicroPython UART does not implement flush
 Since UART is asynchronous data may not have completely sent before python execution continues. arduino implementations include a flush() commeand to overcome this problem. There is an active thread here on the topic, potentially a feature included in future. To work around the issue I simply introduced substantial timing delays in my final solution code. In my case it did not impact functionality since data throughput for my application over RS485 is quite low. 
 
-A more robust approach is to 
+A more robust approach is to explicitly check the 
 
 ### UART.any() may not be reliable
 It seems that `UART.any()` may return a spurious number of characters available to read. This is most likely when a new device is added to the bus, for example when in example 1 when the master (listner) is already running and a slave is connected. In practice this is best dealt with by using a communications protocol like Modbus and discarding junk or corrupted messages. 
@@ -61,5 +63,8 @@ It seems that `UART.any()` may return a spurious number of characters available 
 
 ## Useful resources relating to RS485 and related topics
 Most of these are not directly related to MicroPython or ESP32 but nonetheless were helpful for me to piece together a working solution.
-
+- [MAX3485 - Manufacturer site](https://www.maximintegrated.com/en/products/interface/transceivers/MAX3485.html#tech-docs)
+- [MAX3485 Datasheet](https://datasheets.maximintegrated.com/en/ds/MAX3483-MAX3491.pdf)
+- [Arduino example](https://www.mischianti.org/2020/05/11/interface-arduino-esp8266-esp32-rs-485/) - Used as inspiration for wiring and intial example
+- [Ideas for debugging RS485](https://www.sealevel.com/support/how-to-program-and-debug-rs-485-networks/)
 
