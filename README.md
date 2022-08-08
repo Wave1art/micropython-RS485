@@ -32,8 +32,10 @@ Since RS485 uses differential voltages it is not necessary to include a common g
 2. RS485 echo - repeats everything sent by the master
 
 ### Example 1 - message receiver
-In this example the *slave* device simply broadcasts a message 
+In this example the *slave* device simply broadcasts a message with incrementing count number of a periodic basis. The *Master* device listens for each broadcast and prints the received message to the Serial. 
 
+### Example 2 - message echo
+The *Master* device sends a message and then switches to receive mode. The *Slave* device waits for a small amount of time (few milliseconds) and then responds, echoing the original message and up-incrementing a count of messages receieved and echoed.
 
 
 ## Tricks & useful points learned along the way
@@ -51,14 +53,10 @@ In some rare cases manufacturers may have incorrectly wired the A/B of RS485. Th
 ### MicroPython UART does not implement flush
 Since UART is asynchronous data may not have completely sent before python execution continues. arduino implementations include a flush() commeand to overcome this problem. There is an active thread here on the topic, potentially a feature included in future. To work around the issue I simply introduced substantial timing delays in my final solution code. In my case it did not impact functionality since data throughput for my application over RS485 is quite low. 
 
+A more robust approach is to 
+
 ### UART.any() may not be reliable
-
-
-
-
-
-
-
+It seems that `UART.any()` may return a spurious number of characters available to read. This is most likely when a new device is added to the bus, for example when in example 1 when the master (listner) is already running and a slave is connected. In practice this is best dealt with by using a communications protocol like Modbus and discarding junk or corrupted messages. 
 
 
 ## Useful resources relating to RS485 and related topics
