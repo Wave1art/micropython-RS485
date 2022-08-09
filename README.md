@@ -42,6 +42,7 @@ In this example the *slave* device simply broadcasts a message with incrementing
 ### Example 2 - message echo
 The *Master* device sends a message and then switches to receive mode. The *Slave* device waits for a small amount of time (few milliseconds) and then responds, echoing the original message and up-incrementing a count of messages receieved and echoed.
 
+Note that because of the way the echo works (it doesn't wait to check for a stop bit before returning the buffer) the current example will likely overlap partial messages. The point of this example however was to demonstrate send + receive rather than implementing a real world, fault tolerant, communications protocol.  
 
 ## Tricks & useful points learned along the way
 
